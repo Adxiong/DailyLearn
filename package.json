@@ -1,0 +1,15 @@
+{
+  "name": "dailyLearn",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Adxiong/DailyLearn.git",
+  "author": "adxiong <260245435@qq.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "mysql": "^2.18.1"
+  },
+  "dependencies": {
+    "@types/mysql": "^2.15.20",
+    "tsc": "^2.0.3"
+  }
+}
