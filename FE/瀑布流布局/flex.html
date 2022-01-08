@@ -1,0 +1,98 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-01-08 19:09:26
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-01-08 19:27:12
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <style>
+    html,body{
+       width: 100%;
+     }
+     .container{
+        width: 100%;
+        display: flex;
+      }
+      .wrap {
+        width: 19%;
+        margin: 10px 5px;
+        display: flex;
+        flex-direction: column;
+      }
+     .item {
+       width: 100%;
+     }
+     span{
+       display: block;
+       text-overflow: ellipsis;
+       white-space: nowrap;
+       overflow: hidden;
+     }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="wrap">
+
+    </div>
+    <div class="wrap">
+
+    </div>
+    <div class="wrap">
+
+    </div>
+    <div class="wrap">
+
+    </div>
+    <div class="wrap">
+
+    </div>
+  </div>
+  <script>
+    const url = 'http://api.isoyu.com/api/picture/index'
+    const wraps = document.getElementsByClassName('wrap')
+    axios.get(url)
+     .then( res => {
+       console.log(res.data.data);
+       const data = res.data.data
+       for ( let i = 0 ; i < data.length ; i++) {
+        let j = 0
+
+        if (data.length - i < wraps.length) {
+          j = Math.floor( wraps.length - i / wraps.length)
+        }
+        console.log(j)
+        for (j ; j < wraps.length && i < data.length ; j++) {
+          wraps[j].appendChild(createEle(data[i++]))
+        }        
+       }
+     })
+     .catch( e => {
+       console.error(e);
+     })
+
+     function createEle (data) {
+      const div = document.createElement('div')
+      div.className = 'item'
+      const img = document.createElement('img')
+      img.src = data.cover
+      img.style = "width:100%;"
+      div.appendChild(img)
+      const span = document.createElement('span')
+      span.textContent = data.desc
+      div.appendChild(span)
+      console.log(div);
+      return div
+     }
+  </script>
+</body>
+</html>
