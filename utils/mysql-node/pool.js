@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-01-06 22:22:43
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-01-06 23:48:48
+ * @LastEditTime: 2022-01-09 22:55:14
  */
 const mysql = require('mysql');
 const fs = require("fs");
@@ -18,6 +18,8 @@ const pool = mysql.createPool({
     ...config
 });
 
+
+//可以做命名格式转换
 
 
 class PoolUtil {
