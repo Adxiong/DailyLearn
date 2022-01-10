@@ -6,7 +6,7 @@
  * @LastEditors: Adxiong
  * @LastEditTime: 2022-01-09 22:55:14
  */
-const mysql = require('mysql');
+const mysql = require('../../FE/瀑布流布局/node_modules/@types/mysql');
 const fs = require("fs");
 const path = require("path");
 const { resolve } = require('path');
