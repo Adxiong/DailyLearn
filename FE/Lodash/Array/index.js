@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-01-10 22:46:25
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-01-11 12:50:50
+ * @LastEditTime: 2022-01-11 19:32:21
  */
 
 /**
@@ -35,8 +35,29 @@ function compact( array ) {
   return newArr
 }
 
+/**
+ * 创建一个新数组，将array与任何数组 或 值连接在一起
+ * @param {*} array  被连接的数组
+ * @param  {...any} args 连接的值或数组
+ * @returns 
+ */
+function concat(array, ...args) {
+  var newArr = [...array]
+  args.forEach( item => {
+    if (Object.prototype.toString.call(item) === '[object Array]') {
+      item.forEach( todo => {
+        newArr.push(todo)
+      })
+    } else {
+      newArr.push(item)
+    }
+  } )
+  return newArr
+}
+
 
 export {
   chunk,
-  compact
+  compact,
+  concat
 }
