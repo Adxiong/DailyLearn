@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-01-10 22:46:25
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-01-10 23:32:04
+ * @LastEditTime: 2022-01-11 12:50:50
  */
 
 /**
@@ -20,6 +20,23 @@ function chunk(array, size=1) {
   return newArr
 }
 
+/**
+ * 创建一个新数组，包含原数组中所有非假值元素。例如false，null，0，“”，undefined，NaN都是被认定为假值
+ * @param {*} array 待处理的数组
+ * @returns 返回过滤掉假值的新数组
+ */
+function compact( array ) {
+  var newArr = []
+  array.forEach(ele => {
+    if (Boolean(ele)) {
+      newArr.push(ele)
+    }
+  });
+  return newArr
+}
+
+
 export {
-  chunk
+  chunk,
+  compact
 }
