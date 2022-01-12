@@ -4,11 +4,12 @@
  * @Author: Adxiong
  * @Date: 2022-01-07 22:34:42
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-01-08 00:25:01
+ * @LastEditTime: 2022-01-12 23:01:03
  */
 
 
 class HashRouter {
+  
   constructor () {
     this.routers = {}
     window.addEventListener( "hashchange", this.load.bind(this), false)
