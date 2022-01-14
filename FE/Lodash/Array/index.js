@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-01-10 22:46:25
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-01-11 19:32:21
+ * @LastEditTime: 2022-01-14 14:04:21
  */
 
 /**
@@ -55,9 +55,14 @@ function concat(array, ...args) {
   return newArr
 }
 
-
-export {
-  chunk,
-  compact,
-  concat
+function difference (array, values) {
+  return array.filter( value => !values.includes(value))
 }
+
+
+console.log(difference([3, 2, 1], [4, 2]))
+// export {
+//   chunk,
+//   compact,
+//   concat
+// }
