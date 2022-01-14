@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-01-10 22:46:25
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-01-14 14:04:21
+ * @LastEditTime: 2022-01-14 21:21:17
  */
 
 /**
@@ -55,14 +55,20 @@ function concat(array, ...args) {
   return newArr
 }
 
+/**
+ * 创建一个具有唯一array值的数组，每个值不包含在其他的数组中
+ * @param {*} array 数组
+ * @param {*} values 排除项
+ * @returns 
+ */
 function difference (array, values) {
   return array.filter( value => !values.includes(value))
 }
 
 
-console.log(difference([3, 2, 1], [4, 2]))
-// export {
-//   chunk,
-//   compact,
-//   concat
-// }
+export {
+  chunk,
+  compact,
+  concat,
+  difference
+}
