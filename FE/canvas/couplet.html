@@ -1,0 +1,142 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-01-15 22:39:14
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-01-15 23:39:04
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>couplet</title>
+</head>
+<body>
+  <script>
+    let isMouseDown = false
+    let lastLoc = {x: 0, y: 0}
+    let lineWidth = 10
+    const strokeColor = 'black'
+    let canvas = null
+    let content = null
+    let num
+    let cavasWidth 
+    let canvasHeight
+
+    function init (num = 7) {
+      canvasWidth = 300
+      canvasHeight = canvasWidth * num + 100
+      canvas = document.getElementById('canvas')
+      content = canvas.getContext('2d')
+      canvas.width = canvasWidth
+      canvas.height = canvasHeight
+      drawBackGround()
+    }
+
+    window.onload = ()=>{
+      init()
+      canvas.onmousedown = onmousedown
+      canvas.onmouseup = onmouseup
+      canvas.onmousemove = onmousemove
+      canvas.onmouseout = onmouseout
+    }
+
+    function drawBackGround() {
+      content.fillStyle = 'red'
+      content.fillRect(0,0,canvasWidth,canvasHeight)
+    }
+
+    function onmousedown (e) {
+      e.preventDefault()
+      beginStock({x: e.clientX, y: e.clientY})
+    }
+
+    function onmouseup (e) {
+      e.preventDefault()
+      endStock()
+    }
+
+    function onmouseout (e) {
+      e.preventDefault()
+      endStock()
+    }
+
+    function onmousemove (e) {
+      e.preventDefault()
+      if (isMouseDown) {
+        moveStock({x: e.clientX, y: e.clientY})
+      }
+    }
+
+    function beginStock(point) {
+      isMouseDown = true
+      lastLoc = windowToCanvas(point.x, point.y)
+    } 
+
+    function endStock () {
+      isMouseDown = false
+    }
+
+    function moveStock (point) {
+      const currentLoc = windowToCanvas(point.x, point.y)
+      draw(currentLoc)
+    }
+
+    function draw (point){
+      content.beginPath()
+      content.moveTo(lastLoc.x, lastLoc.y)
+      content.lineTo( point.x, point.y)
+      content.strokeColor = strokeColor
+      content.lineWidth = lineWidth
+      content.lineCap = 'round'
+      content.lineJoin = 'round'
+      content.stroke()
+      lastLoc = {
+        x: point.x,
+        y: point.y
+      }
+    }
+
+    function windowToCanvas (x,y) {
+      var bbox = canvas.getBoundingClientRect()
+      return {x: Math.round(x - bbox.left), y: Math.round(y - bbox.top)}
+    }
+
+    function changeNum () {
+      const res = prompt('输入您的需要字数')
+      if (!Number(res) && Number(res) !== 0) {
+        alert("你的输入非法")
+        return
+      }
+
+      num = Number(res)
+      init(num)
+    }
+
+    function onReset() {
+      content.clearRect(0,0,canvasWidth,canvas.height)
+      drawBackGround()
+    }
+    function save () {
+      var image = canvas.toDataURL('image/png')
+      var linkElement = document.createElement("a");
+      linkElement.setAttribute('href',image);
+      linkElement.setAttribute('downLoad','春联');
+      linkElement.click();
+      drawBackGround();
+    }
+  </script>
+  <div class="wrap">
+    <canvas id="canvas">don't suppose canvas!</canvas>
+    <div class="toolPanel">
+      <button onclick="onReset()">重置</button>
+      <button onclick="save()">保存</button>
+      <button onclick="changeNum()">字数</button>
+    </div>
+  </div>
+</body>
+</html>
