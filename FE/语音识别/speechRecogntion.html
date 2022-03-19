@@ -1,0 +1,67 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-03-19 08:59:13
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-03-19 09:56:18
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .resultContext {
+      width: 200px;
+      height: 200px;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="resultContext">
+
+  </div>
+  <button onclick="start()"> start </button>
+  <button onclick="stop()"> stop</button>
+  <script>
+    const resultBox = document.getElementsByClassName('resultContext')[0]
+    const speechRecogn = new webkitSpeechRecognition() || new SpeechRecognition();
+    const synth = window.speechSynthesis;
+    speechRecogn.lang = 'zh-CH'
+
+    function start() {
+      speechRecogn.start()
+    }
+
+    function stop() {
+      speechRecogn.stop()
+    }
+    speechRecogn.addEventListener('start', () => {
+      console.log("开始了")
+    })
+    speechRecogn.addEventListener("stop", () => {
+      console.log("结束")
+    })
+    speechRecogn.addEventListener('result', (event) => {
+      const result = event.results[0][0].transcript
+      console.log(result);
+      if (result.includes('再乐')) {
+        resultBox.innerText = "你码死了，叫劳资干嘛"
+        synth.speak(new SpeechSynthesisUtterance("你码死了，叫劳资干嘛"))
+      }
+
+    })
+
+
+  </script>
+</body>
+
+</html>
