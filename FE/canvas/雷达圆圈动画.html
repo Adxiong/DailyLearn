@@ -1,0 +1,54 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-03-27 21:45:20
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-03-27 22:28:50
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("canvas")
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    const ctx = canvas.getContext("2d")
+    // let time = null
+    window.addEventListener('resize', (event) => {
+      // if (time) clearTimeout(time)
+      // time = setTimeout(() => {
+      console.log(window.innerWidth, window.innerHeight);
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+      draw(window.innerWidth, window.innerHeight)
+      // }, 300);
+    })
+    function draw(width, height) {
+      ctx.clearRect(0, 0, width, height); // clear canvas
+
+      ctx.fillStyle = "rgb(0,0,0)"
+      ctx.fillRect(0, 0, width, height)
+      ctx.save()
+    }
+    draw(window.innerWidth, window.innerHeight)
+  </script>
+</body>
+
+</html>
