@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-03-27 21:45:20
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-03-27 22:28:50
+ * @LastEditTime: 2022-03-28 16:21:08
 -->
 
 <!DOCTYPE html>
@@ -19,6 +19,10 @@
     body {
       overflow: hidden;
     }
+
+    #canvas {
+      translate: all .5s ease;
+    }
   </style>
 </head>
 
@@ -27,27 +31,43 @@
 
   <script>
     const canvas = document.getElementById("canvas")
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    let step = 0
+    let width, height
     const ctx = canvas.getContext("2d")
-    // let time = null
-    window.addEventListener('resize', (event) => {
-      // if (time) clearTimeout(time)
-      // time = setTimeout(() => {
-      console.log(window.innerWidth, window.innerHeight);
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-      draw(window.innerWidth, window.innerHeight)
-      // }, 300);
-    })
-    function draw(width, height) {
-      ctx.clearRect(0, 0, width, height); // clear canvas
 
-      ctx.fillStyle = "rgb(0,0,0)"
-      ctx.fillRect(0, 0, width, height)
-      ctx.save()
+
+    function init() {
+      width = window.innerWidth
+      height = window.innerHeight
+      canvas.width = width
+      canvas.height = height
     }
-    draw(window.innerWidth, window.innerHeight)
+    window.onresize = init
+
+    function drawCircle(radius) {
+      ctx.beginPath()
+      ctx.lineWidth = 3
+      const color = Math.round(255 * (1 - radius / Math.max(width, height)))
+      ctx.strokeStyle = 'rgba(' + color + ',' + color + ',' + color + ',0.1)'
+      ctx.arc(width / 2, height - 100, radius, 0, Math.PI * 2)
+      ctx.stroke()
+    }
+
+    function drawCircles() {
+      ctx.globalCompositeOperation = 'destination-over';
+
+      ctx.clearRect(0, 0, width, height)
+      for (let i = 0; i < 10; i++) {
+        drawCircle(100 * i + step % 100)
+      }
+      step += 1
+      ctx.fillStyle = 'rgb(0,0,0)'
+      ctx.fillRect(0, 0, width, height)
+      window.requestAnimationFrame(drawCircles)
+    }
+
+    init()
+    drawCircles()
   </script>
 </body>
 
