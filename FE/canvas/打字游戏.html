@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-03-30 20:53:54
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-03-30 20:56:14
+ * @LastEditTime: 2022-03-30 22:37:06
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -26,11 +26,9 @@
       ["context", "document", "beautiful", "match"],
       ["dog", "broad", "launch", "couplet", "speech"]
     ]
-    let TypeText
+    let TypeText = ""
 
     let width, height
-    let step = 0
-    let pointX, pointY
 
 
     function init() {
@@ -41,59 +39,107 @@
     }
     window.onresize = init
 
-    function listenerKeyEveny() {
+    function listenerKeyEvent() {
       window.addEventListener('keydown', (event) => {
         if (event.code.startsWith("Key")) {
-          // const key = event.code.substring(3)
-          console.log(event.key)
           TypeText += event.key
         }
 
         if (event.key === 'Enter') {
-          const index = wordArr.indexOf(TypeText)
-          if (index !== -1) {
-            wordArr.splice(index, 1)
-          }
+          moveArr.map((obj, index) => {
+            // const point = moveArr.indexOf(TypeText)
+            if (obj.word === TypeText) {
+              moveArr.splice(index, 1)
+            }
+          })
           TypeText = ""
+
         }
       })
     }
 
-    function drawText(wordArr, pointX, pointY) {
-      const colorMap = ['#d63031', '#dfe6e9']
-      for (let word of wordArr) {
-        if (TypeText && word.startsWith(TypeText)) {
-          console.log(word.startsWith(TypeText))
-          for (let i = 0; i < word.length; i++) {
-            let color
-            if (TypeText[i] == word[i]) {
-              color = colorMap[0]
-            } else {
-              TypeText.length == word
-              color = colorMap[1]
-              // TypeText = ""
-            }
-            drawWord(word[i], pointX, pointY, color)
-            pointX += ctx.measureText(word[i]).width
-          }
-        } else {
-          // isMatching = false
-          for (let i = 0; i < word.length; i++) {
-            let color = colorMap[1]
-            drawWord(word[i], pointX, pointY, color)
-            pointX += ctx.measureText(word[i]).width
-          }
-        }
-        pointX += 30
-      }
+
+    function TextMove(word, pointX, pointY) {
+      this.pointX = pointX
+      this.pointY = pointY
+      this.word = word
+      this.colorMap = ['#d63031', '#dfe6e9']
+      this.color
     }
 
-    function drawWord(word, pointx, pointy, color) {
+    TextMove.prototype.drawWord = function (word, x, y, color) {
       ctx.fillStyle = color
       ctx.font = '24px heiti'
-      ctx.fillText(word, pointx, pointy)
+      ctx.fillText(word, x, y)
     }
 
+    TextMove.prototype.measureText = () => {
+      ctx.save()
+      ctx.font = '24px heiti'
+      const len = ctx.measureText(this.word).width
+      ctx.restore()
+      return len
+    }
+
+    TextMove.prototype.play = function () {
+      let x = this.pointX
+      if (TypeText && this.word.startsWith(TypeText)) {
+        for (let i = 0; i < this.word.length; i++) {
+          let color
+          let y = this.pointY
+          if (TypeText[i] == this.word[i]) {
+            color = this.color = this.colorMap[0]
+          } else {
+            color = this.color = this.colorMap[1]
+          }
+          this.drawWord(this.word[i], x, y, color)
+          x += ctx.measureText(this.word[i]).width
+        }
+      }
+      else {
+        for (let i = 0; i < this.word.length; i++) {
+          let color = this.color = this.colorMap[1]
+          let y = this.pointY
+          this.drawWord(this.word[i], x, y, color)
+          x += ctx.measureText(this.word[i]).width
+        }
+      }
+      this.width = ctx.measureText(this.word).width
+    }
+    const moveArr = []
+
+    let pointY = 100
+
+    for (let row of wordArr) {
+      const random = Math.random() * 100
+      let x = 0
+      for (let word of row) {
+        const move = new TextMove(word, random + x, pointY)
+        moveArr.push(move)
+        x += move.measureText()
+      }
+      pointY += 40
+    }
+    console.log(moveArr)
+    init()
+
+    let step = 0
+    function animate() {
+      ctx.clearRect(0, 0, width, height)
+      ctx.fillStyle = 'rgb(0,0,0)'
+      ctx.fillRect(0, 0, width, height)
+      moveArr.forEach(instance => {
+        instance.pointX += 5
+        if (instance.pointX > width - 100) {
+          instance.pointX = 0
+        }
+        instance.play()
+      })
+      requestAnimationFrame(animate)
+    }
+
+    listenerKeyEvent()
+    animate()
   </script>
 </body>
 
