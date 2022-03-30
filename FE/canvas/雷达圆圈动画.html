@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-03-27 21:45:20
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-03-29 23:10:08
+ * @LastEditTime: 2022-03-30 20:55:10
 -->
 
 <!DOCTYPE html>
@@ -31,11 +31,12 @@
   <canvas id="canvas"></canvas>
 
   <script>
+
     const canvas = document.getElementById("canvas")
-    let step = 0
     let width, height
-    let pointX, pointY
     const ctx = canvas.getContext("2d")
+    let step = 0
+    let pointX, pointY
 
 
     function init() {
@@ -66,31 +67,14 @@
         drawCircle(100 * i + step % 100)
       }
       step += 1
-      drawGreenCircle()
       window.requestAnimationFrame(drawCircles)
     }
 
-    function drawGreenCircle() {
-      ctx.beginPath()
-      ctx.fillStyle = 'rgb(255,255,255)'
-      ctx.arc(pointX, pointY, 20, 0, Math.PI * 2)
-      ctx.fill()
-    }
-
-    function listenerKeyEveny() {
-      window.addEventListener('keyup', (event) => {
-        switch (event.keyCode) {
-          case 37: return pointX -= 10
-          case 38: return pointY -= 10
-          case 39: return pointX += 10
-          case 40: return pointY += 10
-        }
-      })
-    }
 
     init()
     drawCircles()
-    listenerKeyEveny()
+
+
   </script>
 </body>
 

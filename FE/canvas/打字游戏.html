@@ -1,0 +1,100 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-03-30 20:53:54
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-03-30 20:56:14
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    const canvas = document.getElementById("canvas")
+    const ctx = canvas.getContext("2d")
+    const wordArr = [
+      ["Adxiong", "keyword", "elephant", "brother"],
+      ["context", "document", "beautiful", "match"],
+      ["dog", "broad", "launch", "couplet", "speech"]
+    ]
+    let TypeText
+
+    let width, height
+    let step = 0
+    let pointX, pointY
+
+
+    function init() {
+      width = window.innerWidth
+      height = window.innerHeight
+      canvas.width = width
+      canvas.height = height
+    }
+    window.onresize = init
+
+    function listenerKeyEveny() {
+      window.addEventListener('keydown', (event) => {
+        if (event.code.startsWith("Key")) {
+          // const key = event.code.substring(3)
+          console.log(event.key)
+          TypeText += event.key
+        }
+
+        if (event.key === 'Enter') {
+          const index = wordArr.indexOf(TypeText)
+          if (index !== -1) {
+            wordArr.splice(index, 1)
+          }
+          TypeText = ""
+        }
+      })
+    }
+
+    function drawText(wordArr, pointX, pointY) {
+      const colorMap = ['#d63031', '#dfe6e9']
+      for (let word of wordArr) {
+        if (TypeText && word.startsWith(TypeText)) {
+          console.log(word.startsWith(TypeText))
+          for (let i = 0; i < word.length; i++) {
+            let color
+            if (TypeText[i] == word[i]) {
+              color = colorMap[0]
+            } else {
+              TypeText.length == word
+              color = colorMap[1]
+              // TypeText = ""
+            }
+            drawWord(word[i], pointX, pointY, color)
+            pointX += ctx.measureText(word[i]).width
+          }
+        } else {
+          // isMatching = false
+          for (let i = 0; i < word.length; i++) {
+            let color = colorMap[1]
+            drawWord(word[i], pointX, pointY, color)
+            pointX += ctx.measureText(word[i]).width
+          }
+        }
+        pointX += 30
+      }
+    }
+
+    function drawWord(word, pointx, pointy, color) {
+      ctx.fillStyle = color
+      ctx.font = '24px heiti'
+      ctx.fillText(word, pointx, pointy)
+    }
+
+  </script>
+</body>
+
+</html>
