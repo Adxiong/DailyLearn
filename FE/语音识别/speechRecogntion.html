@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-03-19 08:59:13
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-03-19 09:56:18
+ * @LastEditTime: 2022-03-31 14:35:27
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -54,11 +54,14 @@
       const result = event.results[0][0].transcript
       console.log(result);
       if (result.includes('再乐')) {
-        resultBox.innerText = "你码死了，叫劳资干嘛"
+        resultBox.textContent = "你码死了，叫劳资干嘛"
         synth.speak(new SpeechSynthesisUtterance("你码死了，叫劳资干嘛"))
       }
 
     })
+
+
+
 
 
   </script>
