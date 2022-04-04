@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc && node dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^17.0.23",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "typescript": "^4.6.3"
+  }
+}
