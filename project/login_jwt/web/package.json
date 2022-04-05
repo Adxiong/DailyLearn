@@ -1,0 +1,16 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --trace-warnings --experimental-fetch ./index.js ",
+    "dev:16": "node ./index.js "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^17.0.23",
+    "ts-node": "^10.7.0"
+  }
+}
