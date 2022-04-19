@@ -1,0 +1,175 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-04-19 22:27:43
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-04-19 23:50:40
+-->
+/*
+* @Description:
+* @version:
+* @Author: Adxiong
+* @Date: 2022-04-19 22:27:43
+* @LastEditors: Adxiong
+* @LastEditTime: 2022-04-19 22:27:43
+*/
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .tm_navMenuBtn {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background-color: #fff;
+      border: 1px solid #e3e5e7;
+      position: fixed;
+      top: 30%;
+      right: 0px;
+      border-radius: 8px;
+      z-index: 999999;
+    }
+
+    .tm_menu {
+      background-color: #fff;
+      width: 500px;
+      height: 100vh;
+      border: 1px solid #e3e5e7;
+      position: fixed;
+      top: 0px;
+      right: -500px;
+      z-index: 999999;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .tm_menuNav {
+      width: 100%;
+      padding-bottom: 3px;
+      box-sizing: border-box;
+      border-bottom: 1px solid #e3e5e7;
+    }
+
+    .tm_menuNav span {
+      position: relative;
+      margin: 5px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .tm_activeNavColor {
+      color: #f40;
+    }
+
+    .tm_menuNav span::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 30px;
+      left: 0;
+      right: 0;
+    }
+
+    .tm_menuNav span:hover::after {
+      border-bottom: 1px solid #f40;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tm_navMenuBtn">
+    🚀<br />Likes
+  </div>
+  <div class="tm_menu">
+    <div class="tm_menuNav">
+      <span class="tm_twNav">密码库</span>
+      <span class="tm_lkNav tm_activeNavColor">收藏库</span>
+    </div>
+  </div>
+  <script>
+    function createElement(ele) {
+      return document.createElement(ele)
+    }
+    function appendChild(target, ele) {
+      target.appendChild(ele)
+    }
+    function createMenuNav() {
+      var div = createElement("div")
+      appendChild(document.body, div)
+    }
+
+    function createMenuTab(ele) {
+      var tabs = createElement("div")
+      var tabMenu = createElement("div")
+
+      var tabMenuStyle = tabMenu.style
+      tabMenuStyle.borderBottom = "1px solid black"
+      tabMenuStyle.paddingBottom = "5px"
+
+      var tabPwPanel = createElement("span")
+      tabPwPanel.innerText = "密码库"
+      var tabPwStyle = tabPwPanel.style
+      tabPwStyle.margin = "5px"
+      tabPwStyle.cursor = "pointer"
+
+      var tabLkPanel = createElement("span")
+      tabLkPanel.innerText = "收藏库"
+      var tabLkStyle = tabLkPanel.style
+      tabLkStyle.margin = "5px"
+      tabLkStyle.cursor = "pointer"
+
+      appendChild(tabMenu, tabPwPanel)
+      appendChild(tabMenu, tabLkPanel)
+      appendChild(tabs, tabMenu)
+      appendChild(ele, tabs)
+    }
+
+    function createMenu() {
+      var Menu = createElement("div")
+      createMenuTab(Menu)
+      appendChild(document.body, Menu)
+    }
+
+    function addListent() {
+      var navBtn = document.getElementsByClassName("tm_navMenuBtn")[0]
+      var menu = document.getElementsByClassName("tm_menu")[0]
+      // tm_activeNavColor
+      var menuNav = document.getElementsByClassName("tm_menuNav")[0]
+
+
+      navBtn.onclick = function () {
+        navBtn.style.right = navBtn.style.right == "0px" ? "500px" : "0px"
+        menu.style.right = menu.style.right == "-500px" ? "0px" : "-500px"
+      }
+
+      menuNav.onclick = function (e) {
+        // console.log(e.target.className);
+        var pwTab = document.getElementsByClassName("tm_twNav")[0]
+        var lkTab = document.getElementsByClassName("tm_lkNav")[0]
+        if (e.target.className == "tm_twNav") {
+          pwTab.classList.add("tm_activeNavColor")
+          lkTab.classList = ["tm_lkNav"]
+        } else if (e.target.className == "tm_lkNav") {
+          pwTab.classList = ["tm_twNav"]
+          lkTab.classList.add("tm_activeNavColor")
+        }
+      }
+    }
+
+
+    // createMenuNav()
+    // createMenu()
+    addListent()
+  </script>
+</body>
+
+</html>
