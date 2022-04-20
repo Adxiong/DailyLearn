@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-04-19 22:27:43
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-04-19 23:50:40
+ * @LastEditTime: 2022-04-20 23:08:21
 -->
 /*
 * @Description:
@@ -82,6 +82,65 @@
     .tm_menuNav span:hover::after {
       border-bottom: 1px solid #f40;
     }
+
+    .tm_content {
+      position: relative;
+      height: 100%;
+    }
+
+    .tm_content_lk {
+      display: flex;
+      justify-content: left;
+      flex-wrap: wrap;
+    }
+
+    .tm_content_lk_item {
+      width: 80px;
+      height: 100px;
+      margin: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tm_content_lk_item>img {
+      width: 50px;
+      height: 50px;
+      /* border-radius: 50%; */
+    }
+
+    .tm_content_lk_item>span {
+      width: 100%;
+      color: black;
+      display: block;
+      text-align: center;
+    }
+
+    .tm_lk_addForm {
+      position: absolute;
+      z-index: 999999;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e3e5e7;
+    }
+
+    .tm_lkadd_close {
+      position: absolute;
+      right: 10px;
+      top: 15px;
+    }
+
+    .tm_lk_form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tm_lk_form .tm_lk_form_item {
+      display: block;
+      margin: 5px 0;
+    }
   </style>
 </head>
 
@@ -93,6 +152,60 @@
     <div class="tm_menuNav">
       <span class="tm_twNav">密码库</span>
       <span class="tm_lkNav tm_activeNavColor">收藏库</span>
+    </div>
+    <div class="tm_content">
+      <div class="tm_content_lk">
+        <div class="tm_content_lk_item tm_lk_create">
+          <img src="https://www.bilibili.com/favicon.ico?v=1" alt="">
+          <span>创建</span>
+        </div>
+        <div class="tm_content_lk_item">
+          <img src="https://www.bilibili.com/favicon.ico?v=1" alt="">
+          <span>bilibili</span>
+        </div>
+        <div class="tm_content_lk_item">
+          <img src="https://www.bilibili.com/favicon.ico?v=1" alt="">
+          <span>bilibili</span>
+        </div>
+        <div class="tm_content_lk_item">
+          <img src="https://www.bilibili.com/favicon.ico?v=1" alt="">
+          <span>bilibili</span>
+        </div>
+        <div class="tm_content_lk_item">
+          <img src="https://www.bilibili.com/favicon.ico?v=1" alt="">
+          <span>bilibili</span>
+        </div>
+        <div class="tm_content_lk_item">
+          <img src="https://www.bilibili.com/favicon.ico?v=1" alt="">
+          <span>bilibili</span>
+        </div>
+        <div class="tm_content_lk_item">
+          <img src="https://www.bilibili.com/favicon.ico?v=1" alt="">
+          <span>bilibili</span>
+        </div>
+      </div>
+      <div class="tm_lk_addForm" style="display: none;">
+        <header>添加收藏</header>
+        <div class="tm_lk_form">
+          <div class="tm_lk_form_item">
+            <label>
+              网址：
+              <input type="text" class="tm_link">
+            </label>
+          </div>
+          <div class="tm_lk_form_item">
+            <label>
+              别名：
+              <input type="text" class="tm_alias">
+            </label>
+          </div>
+        </div>
+        <menu>
+          <button class="tm_lkform_add">创建</button>
+          <button class="tm_lkform_cancel tm_close">取消</button>
+        </menu>
+        <span class="tm_lkadd_close tm_close">【关闭】</span>
+      </div>
     </div>
   </div>
   <script>
@@ -142,17 +255,22 @@
     function addListent() {
       var navBtn = document.getElementsByClassName("tm_navMenuBtn")[0]
       var menu = document.getElementsByClassName("tm_menu")[0]
-      // tm_activeNavColor
+      var tmLkCreate = document.getElementsByClassName("tm_lk_create")[0]
       var menuNav = document.getElementsByClassName("tm_menuNav")[0]
+      var tmLkaddClose = document.getElementsByClassName("tm_lkadd_close")[0]
+      var lkaddForm = document.getElementsByClassName("tm_lk_addForm")[0]
+      var tmLink = document.getElementsByClassName("tm_link")[0]
+      var tmAlias = document.getElementsByClassName("tm_alias")[0]
 
 
+      // event set tab position
       navBtn.onclick = function () {
         navBtn.style.right = navBtn.style.right == "0px" ? "500px" : "0px"
         menu.style.right = menu.style.right == "-500px" ? "0px" : "-500px"
       }
 
+      // event set tab style
       menuNav.onclick = function (e) {
-        // console.log(e.target.className);
         var pwTab = document.getElementsByClassName("tm_twNav")[0]
         var lkTab = document.getElementsByClassName("tm_lkNav")[0]
         if (e.target.className == "tm_twNav") {
@@ -163,6 +281,21 @@
           lkTab.classList.add("tm_activeNavColor")
         }
       }
+
+      // event show create Lk form
+      tmLkCreate.onclick = function () {
+        tmLink.value = location.href
+        tmAlias.value = document.title
+        lkaddForm.style.display = "block"
+      }
+
+      lkaddForm.onclick = function (e) {
+        console.log(e.target.className);
+        if (e.target.className.includes("tm_close")) {
+          lkaddForm.style.display = "none"
+        }
+      }
+
     }
 
 

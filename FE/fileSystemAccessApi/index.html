@@ -1,0 +1,44 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-04-20 10:37:42
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-04-20 11:38:12
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <input type="text" onclick="setPath()">
+  <button onclick="openFolder()">open folder</button>
+  <script>
+    async function openFolder() {
+      var [handle] = await window.showOpenFilePicker()
+      var file = await handle.getFile()
+      console.log(await file.text());
+    }
+
+    async function setPath(e) {
+      var handle = await window.showDirectoryPicker()
+      // handle.click = () => {
+      //   console.log(1);
+      // }
+      console.log(e);
+      e.target.value = handle.name
+      // console.log(handle.values());
+      // console.log(await handle);
+    }
+  </script>
+</body>
+
+</html>
