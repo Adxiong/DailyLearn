@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-04-20 10:37:42
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-04-20 11:38:12
+ * @LastEditTime: 2022-04-20 23:38:55
 -->
 
 <!DOCTYPE html>
@@ -21,6 +21,7 @@
 
   <input type="text" onclick="setPath()">
   <button onclick="openFolder()">open folder</button>
+  <button onclick="getNewFileHandle()">new</button>
   <script>
     async function openFolder() {
       var [handle] = await window.showOpenFilePicker()
@@ -37,6 +38,16 @@
       e.target.value = handle.name
       // console.log(handle.values());
       // console.log(await handle);
+    }
+
+    async function getNewFileHandle() {
+      const opts = {
+        types: [{
+          description: 'Text file',
+          accept: { 'text/plain': ['.txt'] },
+        }],
+      };
+      console.log(await window.showSaveFilePicker(opts));
     }
   </script>
 </body>
