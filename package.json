@@ -12,9 +12,15 @@
     "dev": "ts-node ./FE/promise系列/promise.ts"
   },
   "dependencies": {
+    "@types/amqplib": "^0.8.2",
     "@types/axios": "^0.14.0",
     "@types/mysql": "^2.15.20",
+    "amqplib": "^0.8.0",
     "axios": "^0.24.0",
+    "create-react-app": "^5.0.1",
+    "flow": "^0.2.3",
+    "react-dom": "^18.0.0",
+    "react-reconciler": "^0.27.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
   }
