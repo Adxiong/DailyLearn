@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-05-01 11:09:41
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-05-01 22:10:54
+ * @LastEditTime: 2022-05-01 23:08:40
  */
 
 let nextFiberReconcileWork = null
@@ -96,14 +96,10 @@ function reConcile(fiber) {
     prevSibling = newFiber
     index++
   }
-
-
 }
 
 function performNextWork(fiber) {
   let nextFiber = null
-
-
   reConcile(fiber)
 
   if (fiber.child) {
@@ -118,12 +114,9 @@ function performNextWork(fiber) {
     }
     nextFiber = nextFiber.parent
   }
-
   return nextFiber
 
 }
-
-
 
 function commitWork(fiber) {
   if (!fiber) {
@@ -131,20 +124,15 @@ function commitWork(fiber) {
   }
   let domParentFiber = fiber.parent
 
-
   while (!domParentFiber.dom) {
     domParentFiber = domParentFiber.parent
   }
-
   const domParent = domParentFiber.dom
-
   if (fiber.dom != null) {
     domParent.appendChild(fiber.dom)
   }
-
   commitWork(fiber.child)
   commitWork(fiber.sibling)
-
 }
 
 function commitRoot() {
