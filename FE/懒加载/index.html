@@ -1,0 +1,56 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-05-05 20:37:02
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-05-05 21:29:33
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="pic-wrapper">
+
+  </div>
+
+  <script>
+    const picWrapper = document.getElementsByClassName("pic-wrapper")[0]
+    const imgArr = new Array(10000).fill("http://ra6ar9f90.hn-bkt.clouddn.com/165148266595492e4a7dd9566d")
+    const picArr = []
+    const eleWrapper = document.createDocumentFragment()
+    imgArr.forEach(item => {
+      const ele = document.createElement("img")
+      ele.dataset.src = item
+      ele.width = "200"
+      ele.height = "200"
+      ele.style.margin = "10px"
+      // picWrapper.appendChild(ele)
+      eleWrapper.appendChild(ele)
+      picArr.push(ele)
+    })
+    picWrapper.appendChild(eleWrapper)
+    const observe = new IntersectionObserver(entries => {
+      entries.forEach(item => {
+        if (item.isIntersecting) {
+          console.log(item.target.dataset.src);
+          item.target.src = item.target.dataset.src
+          observe.unobserve(item.target)
+        }
+      })
+    }, { rootMargin: "0px 0px 200px 0px" })
+
+    picArr.forEach(item => observe.observe(item))
+
+
+  </script>
+</body>
+
+</html>
