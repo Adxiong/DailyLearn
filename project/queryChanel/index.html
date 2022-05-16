@@ -1,0 +1,48 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-05-13 11:54:19
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-05-13 12:39:21
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.js"></script>
+  <div>
+    <div>
+      <span class="title">BLEU DE CHANEL</span>
+      <span>香奈儿蔚蓝男士香精</span>
+    </div>
+    <img
+      src="https://www.chanel.cn/fnbv3/image/512/chanel__com_type1/skus_relative/bleu-de-chanel-_-100ml.3145891071801.jpg"
+      alt="">
+
+    <div>库存状态</div>
+  </div>
+
+  <script>
+    const url = 'https://www.chanel.cn/zh_CN/fragrance-beauty/services/productws/displaybutton?callbackName=getStockFNB0107170&sku=0107170&dataType=jsonp&_=1652413547821'
+    function fetchStoreState() {
+      fetch(url, { "mode": "no-cors" }).then(res => {
+        console.log(res);
+      })
+    }
+    window.onload = function () {
+      setTimeout(() => {
+        fetchStoreState()
+      }, 60 * 60);
+    }
+  </script>
+</body>
+
+</html>

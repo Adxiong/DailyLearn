@@ -5,125 +5,8 @@ var ctx = canvas.getContext("2d");
 ocas.width = canvas.width = window.innerWidth;
 ocas.height = canvas.height = window.innerHeight;
 var bigbooms = [];
+var stars = [];
 
-// window.onload = function() {
-//     initAnimate();
-// };
-
-document.getElementById("iframMusic").onload = function () {
-  var music = document.getElementById("music");
-  music.src = "./mp3/music.mp3";
-  music.oncanplay = function () {
-    music.play();
-  };
-};
-// 开始放烟花
-function initAnimate() {
-  drawBg();
-  lastTime = new Date();
-  animate();
-}
-var lastTime;
-
-function animate() {
-  ctx.save();
-  ctx.fillStyle = "rgba(0,5,24,0.1)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.restore();
-  var newTime = new Date();
-  if (newTime - lastTime > 2000 + (window.innerHeight - 767) / 2) {
-    var random = Math.random() * 100 > 33 ? true : false;
-    var x = getRandom(canvas.width / 5, (canvas.width * 4) / 5);
-    var y = getRandom(50, 200);
-    if (random) {
-      var bigboom = new Boom(
-        getRandom(canvas.width / 3, (canvas.width * 2) / 3),
-        2,
-        "#FFF",
-        {
-          x: x,
-          y: y,
-        }
-      );
-      bigbooms.push(bigboom);
-    } else {
-      var bigboom = new Boom(
-        getRandom(canvas.width / 3, (canvas.width * 2) / 3),
-        2,
-        "#FFF",
-        {
-          x: canvas.width / 2,
-          y: 200,
-        },
-        document.querySelectorAll(".shape")[
-        parseInt(getRandom(0, document.querySelectorAll(".shape").length))
-        ]
-      );
-      bigbooms.push(bigboom);
-    }
-    lastTime = newTime;
-    console.log(bigbooms);
-  }
-  stars.foreach(function () {
-    this.paint();
-  });
-  drawMoon();
-  bigbooms.foreach(function (index) {
-    var that = this;
-    if (!this.dead) {
-      this._move();
-      this._drawLight();
-    } else {
-      this.booms.foreach(function (index) {
-        if (!this.dead) {
-          this.moveTo(index);
-        } else {
-          if (index === that.booms.length - 1) {
-            bigbooms[bigbooms.indexOf(that)] = null;
-          }
-        }
-      });
-    }
-  });
-  raf(animate);
-}
-
-function drawMoon() {
-  var moon = document.getElementById("moon");
-  var centerX = canvas.width - 200,
-    centerY = 100,
-    width = 80;
-  if (moon.complete) {
-    ctx.drawImage(moon, centerX, centerY, width, width);
-  } else {
-    moon.onload = function () {
-      ctx.drawImage(moon, centerX, centerY, width, width);
-    };
-  }
-  var index = 0;
-  for (var i = 0; i < 10; i++) {
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(
-      centerX + width / 2,
-      centerY + width / 2,
-      width / 2 + index,
-      0,
-      2 * Math.PI
-    );
-    ctx.fillStyle = "rgba(240,219,120,0.005)";
-    index += 2;
-    ctx.fill();
-    ctx.restore();
-  }
-}
-Array.prototype.foreach = function (callback) {
-  for (var i = 0; i < this.length; i++) {
-    if (this[i] !== null) {
-      callback.apply(this[i], [i]);
-    }
-  }
-};
 var raf =
   window.requestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
@@ -133,21 +16,26 @@ var raf =
   function (callback) {
     window.setTimeout(callback, 1000 / 60);
   };
-canvas.onclick = function () {
-  var x = event.clientX;
-  var y = event.clientY;
-  var bigboom = new Boom(
-    getRandom(canvas.width / 3, (canvas.width * 2) / 3),
-    2,
-    "#FFF",
-    {
-      x: x,
-      y: y,
-    }
-  );
-  bigbooms.push(bigboom);
+
+function Star(x, y, r) {
+  this.x = x
+  this.y = y
+  this.r = r
 };
-var Boom = function (x, r, c, boomArea, shape) {
+
+Star.prototype = {
+  paint: function () {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+    ctx.fillStyle = "rgba(255,255,255," + this.r + ")";
+    ctx.fill();
+    ctx.restore();
+  },
+};
+
+
+function Boom(x, r, c, boomArea, shape) {
   this.booms = [];
   this.x = x;
   this.y = canvas.height + r;
@@ -241,6 +129,130 @@ Boom.prototype = {
   },
 };
 
+
+
+
+// 开始放烟花
+function initAnimate() {
+  drawBg();
+  lastTime = new Date();
+  animate();
+}
+var lastTime;
+
+function animate() {
+  ctx.save();
+  ctx.fillStyle = "rgba(0,5,24,0.1)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.restore();
+  var newTime = new Date();
+  if (newTime - lastTime > 2000 + (window.innerHeight - 767) / 2) {
+    var random = Math.random() * 100 > 33 ? true : false;
+    var x = getRandom(canvas.width / 5, (canvas.width * 4) / 5);
+    var y = getRandom(50, 200);
+    if (random) {
+      var bigboom = new Boom(
+        getRandom(canvas.width / 3, (canvas.width * 2) / 3),
+        2,
+        "#FFF",
+        {
+          x: x,
+          y: y,
+        }
+      );
+      bigbooms.push(bigboom);
+    } else {
+      var bigboom = new Boom(
+        getRandom(canvas.width / 3, (canvas.width * 2) / 3),
+        2,
+        "#FFF",
+        {
+          x: canvas.width / 2,
+          y: 200,
+        },
+        document.querySelectorAll(".shape")[
+        parseInt(getRandom(0, document.querySelectorAll(".shape").length))
+        ]
+      );
+      bigbooms.push(bigboom);
+    }
+    lastTime = newTime;
+    console.log(bigbooms);
+  }
+  stars.forEach((_this) => _this.paint());
+  drawMoon();
+  bigbooms.forEach((index) => {
+    var that = this;
+    if (!this.dead) {
+      this._move();
+      this._drawLight();
+    } else {
+      this.booms.forEach(function (index) {
+        if (!this.dead) {
+          this.moveTo(index);
+        } else {
+          if (index === that.booms.length - 1) {
+            bigbooms[bigbooms.indexOf(that)] = null;
+          }
+        }
+      });
+    }
+  });
+  raf(animate);
+}
+
+function drawMoon() {
+  var moon = document.getElementById("moon");
+  var centerX = canvas.width - 200,
+    centerY = 100,
+    width = 80;
+  if (moon.complete) {
+    ctx.drawImage(moon, centerX, centerY, width, width);
+  } else {
+    moon.onload = function () {
+      ctx.drawImage(moon, centerX, centerY, width, width);
+    };
+  }
+  var index = 0;
+  for (var i = 0; i < 10; i++) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(
+      centerX + width / 2,
+      centerY + width / 2,
+      width / 2 + index,
+      0,
+      2 * Math.PI
+    );
+    ctx.fillStyle = "rgba(240,219,120,0.005)";
+    index += 2;
+    ctx.fill();
+    ctx.restore();
+  }
+}
+Array.prototype.foreach = function (callback) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] !== null) {
+      callback.apply(this[i], [i]);
+    }
+  }
+};
+
+canvas.onclick = function () {
+  var x = event.clientX;
+  var y = event.clientY;
+  var bigboom = new Boom(
+    getRandom(canvas.width / 3, (canvas.width * 2) / 3),
+    2,
+    "#FFF",
+    {
+      x: x,
+      y: y,
+    }
+  );
+  bigbooms.push(bigboom);
+};
+
 function putValue(canvas, context, ele, dr, callback) {
   context.clearRect(0, 0, canvas.width, canvas.height);
   var img = new Image();
@@ -325,8 +337,8 @@ function getimgData(canvas, context, dr) {
 function getRandom(a, b) {
   return Math.random() * (b - a) + a;
 }
-var maxRadius = 1,
-  stars = [];
+var maxRadius = 1
+
 
 function drawBg() {
   for (var i = 0; i < 100; i++) {
@@ -334,27 +346,14 @@ function drawBg() {
     var x = Math.random() * canvas.width;
     var y = Math.random() * 2 * canvas.height - canvas.height;
     var star = new Star(x, y, r);
+    console.log(star)
     stars.push(star);
     star.paint();
   }
 }
-var Star = function (x, y, r) {
-  this.x = x;
-  this.y = y;
-  this.r = r;
-};
-Star.prototype = {
-  paint: function () {
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
-    ctx.fillStyle = "rgba(255,255,255," + this.r + ")";
-    ctx.fill();
-    ctx.restore();
-  },
-};
+
 var focallength = 250;
-var Frag = function (centerX, centerY, radius, color, tx, ty) {
+function Frag(centerX, centerY, radius, color, tx, ty) {
   this.tx = tx;
   this.ty = ty;
   this.x = centerX;
@@ -386,4 +385,17 @@ Frag.prototype = {
     }
     this.paint();
   },
+};
+
+
+window.onload = function () {
+  initAnimate();
+};
+
+document.getElementById("iframMusic").onload = function () {
+  var music = document.getElementById("music");
+  music.src = "./mp3/music.mp3";
+  music.oncanplay = function () {
+    music.play();
+  };
 };
