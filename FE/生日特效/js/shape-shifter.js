@@ -177,8 +177,7 @@ S.UI = (function () {
             var prologue = document.querySelector(".prologue");
             /* 烟花 */
             var fireworks = document.querySelector(".fireworks");
-            console.log(prologue, "prologue");
-            console.log(prologue, "fireworks");
+
             /* 隐藏开场白 */
             prologue.style.display = "none";
             /* 显示烟花 */
@@ -208,18 +207,15 @@ S.UI = (function () {
     overlay.classList.remove("overlay--visible");
     sequence =
       typeof value === "object" ? value : sequence.concat(value.split("|"));
-    console.log(sequence, "序列");
+    // console.log(sequence, "序列");
     input.value = "";
     checkInputWidth();
 
     timedAction(
       function () {
         current = sequence.shift();
-        console.log(current, "当前需要显示的文字");
         action = getAction(current);
         value = getValue(current);
-        console.log(value, "value");
-        console.log(action, "action");
         switch (action) {
           case "countdown":
             value = parseInt(value, 10) || 10;
@@ -290,7 +286,6 @@ S.UI = (function () {
             break;
 
           default:
-            console.log(1111);
             S.Shape.switchShape(
               S.ShapeBuilder.letter(current[0] === cmd ? "What?" : current)
             );

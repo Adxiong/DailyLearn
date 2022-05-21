@@ -6,17 +6,57 @@ ocas.width = canvas.width = window.innerWidth;
 ocas.height = canvas.height = window.innerHeight;
 var bigbooms = [];
 var stars = [];
+var lastTime;
+var shapeIndex = 0
+
+// var focallength = 250;
 
 var raf =
   window.requestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
   window.mozRequestAnimationFrame ||
   window.oRequestAnimationFrame ||
-  window.msRequestAnimationFrame ||
-  function (callback) {
-    window.setTimeout(callback, 1000 / 60);
-  };
+  window.msRequestAnimationFrame
+// function (callback) {
+//   window.setTimeout(callback, 10000 / 60);
+// };
 
+function getRandom(a, b) {
+  return Math.random() * (b - a) + a;
+}
+function Frag(centerX, centerY, radius, color, tx, ty) {
+  this.tx = tx;
+  this.ty = ty;
+  this.x = centerX;
+  this.y = centerY;
+  this.dead = false;
+  this.centerX = centerX;
+  this.centerY = centerY;
+  this.radius = radius;
+  this.color = color;
+};
+Frag.prototype = {
+  paint: function () {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    ctx.fillStyle =
+      "rgba(" + this.color.a + "," + this.color.b + "," + this.color.c + ",1)";
+    ctx.fill();
+    ctx.restore();
+  },
+  moveTo: function (index) {
+    this.ty = this.ty + 0.3;
+    var dx = this.tx - this.x,
+      dy = this.ty - this.y;
+    this.x = Math.abs(dx) < 0.1 ? this.tx : this.x + dx * 0.1;
+    this.y = Math.abs(dy) < 0.1 ? this.ty : this.y + dy * 0.1;
+    if (dx === 0 && Math.abs(dy) <= 80) {
+      this.dead = true;
+    }
+    this.paint();
+  },
+};
 function Star(x, y, r) {
   this.x = x
   this.y = y
@@ -130,77 +170,6 @@ Boom.prototype = {
 };
 
 
-
-
-// 开始放烟花
-function initAnimate() {
-  drawBg();
-  lastTime = new Date();
-  animate();
-}
-var lastTime;
-
-function animate() {
-  ctx.save();
-  ctx.fillStyle = "rgba(0,5,24,0.1)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.restore();
-  var newTime = new Date();
-  if (newTime - lastTime > 2000 + (window.innerHeight - 767) / 2) {
-    var random = Math.random() * 100 > 33 ? true : false;
-    var x = getRandom(canvas.width / 5, (canvas.width * 4) / 5);
-    var y = getRandom(50, 200);
-    if (random) {
-      var bigboom = new Boom(
-        getRandom(canvas.width / 3, (canvas.width * 2) / 3),
-        2,
-        "#FFF",
-        {
-          x: x,
-          y: y,
-        }
-      );
-      bigbooms.push(bigboom);
-    } else {
-      var bigboom = new Boom(
-        getRandom(canvas.width / 3, (canvas.width * 2) / 3),
-        2,
-        "#FFF",
-        {
-          x: canvas.width / 2,
-          y: 200,
-        },
-        document.querySelectorAll(".shape")[
-        parseInt(getRandom(0, document.querySelectorAll(".shape").length))
-        ]
-      );
-      bigbooms.push(bigboom);
-    }
-    lastTime = newTime;
-    console.log(bigbooms);
-  }
-  stars.forEach((_this) => _this.paint());
-  drawMoon();
-  bigbooms.forEach((index) => {
-    var that = this;
-    if (!this.dead) {
-      this._move();
-      this._drawLight();
-    } else {
-      this.booms.forEach(function (index) {
-        if (!this.dead) {
-          this.moveTo(index);
-        } else {
-          if (index === that.booms.length - 1) {
-            bigbooms[bigbooms.indexOf(that)] = null;
-          }
-        }
-      });
-    }
-  });
-  raf(animate);
-}
-
 function drawMoon() {
   var moon = document.getElementById("moon");
   var centerX = canvas.width - 200,
@@ -230,6 +199,76 @@ function drawMoon() {
     ctx.restore();
   }
 }
+
+
+
+
+function animate() {
+  ctx.save();
+  ctx.fillStyle = "rgba(0,5,24,0.1)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.restore();
+  var newTime = new Date();
+  if (newTime - lastTime > 2000 + (window.innerHeight - 767) / 2) {
+    var random = Math.random() * 100 > 50 ? true : false;
+    var x = getRandom(canvas.width / 5, (canvas.width * 4) / 5);
+    var y = getRandom(50, 200);
+    if (random) {
+      var bigboom = new Boom(
+        getRandom(canvas.width / 3, (canvas.width * 2) / 3),
+        2,
+        "#FFF",
+        {
+          x: x,
+          y: y,
+        }
+      );
+      bigbooms.push(bigboom);
+    } else {
+      var bigboom = new Boom(
+        getRandom(canvas.width / 3, (canvas.width * 2) / 3),
+        2,
+        "#FFF",
+        {
+          x: canvas.width / 2,
+          y: 200,
+        },
+        document.querySelectorAll(".shape")[
+        shapeIndex
+        // parseInt(getRandom(0, document.querySelectorAll(".shape").length))
+        ]
+      );
+      shapeIndex++
+      bigbooms.push(bigboom);
+    }
+    lastTime = newTime;
+  }
+
+  stars.forEach((_this) => _this.paint());
+  drawMoon();
+
+  bigbooms.length && bigbooms.forEach((bigboom, bigboomIndex) => {
+    if (bigboom == null) { }
+    else
+      if (!bigboom.dead) {
+        bigboom._move()
+        bigboom._drawLight()
+      } else {
+        bigboom.booms.forEach((boom, boomIndex) => {
+          if (!boom.dead) {
+            boom.moveTo(boomIndex)
+          } else {
+            if (boomIndex === bigboom.booms.length - 1) {
+              bigbooms[bigboomIndex] = null
+              // bigbooms.splice(bigboomIndex, 1)
+            }
+          }
+        })
+      }
+  })
+  raf(animate);
+}
+
 Array.prototype.foreach = function (callback) {
   for (var i = 0; i < this.length; i++) {
     if (this[i] !== null) {
@@ -334,9 +373,7 @@ function getimgData(canvas, context, dr) {
   return dots;
 }
 
-function getRandom(a, b) {
-  return Math.random() * (b - a) + a;
-}
+
 var maxRadius = 1
 
 
@@ -346,51 +383,22 @@ function drawBg() {
     var x = Math.random() * canvas.width;
     var y = Math.random() * 2 * canvas.height - canvas.height;
     var star = new Star(x, y, r);
-    console.log(star)
     stars.push(star);
     star.paint();
   }
 }
 
-var focallength = 250;
-function Frag(centerX, centerY, radius, color, tx, ty) {
-  this.tx = tx;
-  this.ty = ty;
-  this.x = centerX;
-  this.y = centerY;
-  this.dead = false;
-  this.centerX = centerX;
-  this.centerY = centerY;
-  this.radius = radius;
-  this.color = color;
-};
-Frag.prototype = {
-  paint: function () {
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-    ctx.fillStyle =
-      "rgba(" + this.color.a + "," + this.color.b + "," + this.color.c + ",1)";
-    ctx.fill();
-    ctx.restore();
-  },
-  moveTo: function (index) {
-    this.ty = this.ty + 0.3;
-    var dx = this.tx - this.x,
-      dy = this.ty - this.y;
-    this.x = Math.abs(dx) < 0.1 ? this.tx : this.x + dx * 0.1;
-    this.y = Math.abs(dy) < 0.1 ? this.ty : this.y + dy * 0.1;
-    if (dx === 0 && Math.abs(dy) <= 80) {
-      this.dead = true;
-    }
-    this.paint();
-  },
-};
 
 
-window.onload = function () {
-  initAnimate();
-};
+
+// 开始放烟花
+function initAnimate() {
+  drawBg();
+  lastTime = new Date();
+  animate();
+}
+
+
 
 document.getElementById("iframMusic").onload = function () {
   var music = document.getElementById("music");

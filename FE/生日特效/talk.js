@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-26 14:21:02
- * @LastEditTime: 2022-05-06 23:35:01
+ * @LastEditTime: 2022-05-21 00:34:30
  * @LastEditors: Adxiong
  * @Description: In User Settings Edit
  * @FilePath: \烟花表白(可自定义文字)\talk.js
@@ -86,3 +86,5 @@ function modal(content, callback) {
     callback();
   });
 }
+
+
