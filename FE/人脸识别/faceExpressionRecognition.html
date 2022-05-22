@@ -1,0 +1,153 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-05-22 14:24:40
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-05-22 17:02:57
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="face-api.js"></script>
+  <style>
+    .position {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      text-align: left;
+    }
+
+    .w_800 {
+      width: 800px;
+    }
+
+    .h_500 {
+      height: 500px;
+    }
+
+    .countdown {
+      width: 200px;
+      position: absolute;
+      top: 100px;
+      left: 450px;
+      font-size: 32px;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      color: aquamarine;
+    }
+
+    .progress {
+      width: 200px;
+      position: absolute;
+      top: 150px;
+      left: 200px;
+      font-size: 32px;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      color: aquamarine;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .progress-item {
+      /* height: 40px; */
+      position: relative;
+      border: 1px solid black;
+      background-color: purple;
+      padding: 5px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+
+    .complete {
+      background-color: aquamarine;
+      color: aliceblue;
+    }
+
+    .video {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+
+<body>
+  <Video class="position w_800 h_500 video" autoplay muted></Video>
+
+  <Canvas class="position " width="800" height="500"></Canvas>
+  <div class="countdown">
+    倒计时：<span class="time">10</span>s
+  </div>
+  <div class="progress w_800 h_500">
+    <span class="progress-item" data-expression="happy">开心</span>
+    <span class="progress-item" data-expression="sad">伤心</span>
+    <span class="progress-item" data-expression="angry">生气</span>
+  </div>
+
+
+
+  <script>
+    (async function () {
+      const SSD_MOBILENETV1 = 'ssd_mobilenetv1'
+
+      const videoObj = document.getElementsByTagName('Video')[0]
+      const canvasObj = document.getElementsByTagName('Canvas')[0]
+
+      const progressItems = document.getElementsByClassName('progress-item')
+
+      const timeEl = document.getElementsByClassName('time')[0]
+
+      const timeInterval = setInterval(() => {
+        if (Number(timeEl.textContent) == 0) {
+          return clearInterval(timeInterval)
+        }
+        timeEl.textContent = Number(timeEl.textContent) - 1
+
+      }, 1000)
+
+      function setCurrentProgress(key) {
+        for (let i = 0; i < progressItems.length; i++) {
+          const item = progressItems[i]
+          if (item.dataset.expression == key) {
+            item.classList.add('complete')
+          }
+        }
+      }
+
+      async function getVideoStream() {
+        await navigator.mediaDevices.getUserMedia({ video: true }).then(stream => videoObj.srcObject = stream)
+      }
+
+      getVideoStream()
+
+      async function ready() {
+        await faceapi.nets.ssdMobilenetv1.loadFromUri('./')
+        await faceapi.loadFaceExpressionModel('./')
+      }
+      await ready()
+      async function getExpression(expressions) {
+        return await expressions.asSortedArray()[0].expression
+      }
+      async function animate() {
+        requestAnimationFrame(animate);
+        const result = await faceapi.detectSingleFace(videoObj).withFaceExpressions()
+        if (result) {
+          const dims = faceapi.matchDimensions(canvasObj, videoObj, true)
+          const resizedResult = faceapi.resizeResults(result, dims)
+          setCurrentProgress(await getExpression(resizedResult.expressions))
+          const minConfidence = 0.8
+          faceapi.draw.drawDetections(canvasObj, resizedResult)
+          faceapi.draw.drawFaceExpressions(canvasObj, resizedResult, minConfidence)
+        }
+      }
+      await animate()
+    })()
+
+  </script>
+</body>
+
+</html>
