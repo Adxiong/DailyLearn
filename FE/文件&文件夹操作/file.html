@@ -1,0 +1,74 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-05-23 16:26:18
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-05-23 17:42:58
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    span {
+      margin: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <button>打开文件</button>
+  <section>
+    <div></div>
+  </section>
+
+  <script>
+
+    function toFormat(num) {
+      if (num.length < 2) {
+        return "0" + num
+      }
+      return num
+    }
+    window.onload = function () {
+      var btn = document.getElementsByTagName('button')[0]
+      var divEl = document.getElementsByTagName('div')[0]
+      const content = []
+      btn.onclick = async function () {
+        var [fileHandle] = await window.showOpenFilePicker()
+        if (fileHandle.kind === 'file') {
+          document.title = fileHandle.name
+          var file = await fileHandle.getFile()
+          const data = await file.arrayBuffer()
+          const int8ArrayData = new Uint8Array(data)
+          int8ArrayData.forEach(code => {
+            let hexChar = toFormat(code.toString(16))
+            content.push(hexChar.toLocaleUpperCase())
+          })
+          const parent = document.createDocumentFragment()
+          let div
+          for (let index = 0; index < content.length; index++) {
+            if (index % 8 === 0) {
+              index != 0 && parent.append(div)
+              div = document.createElement("div")
+            }
+            const span = document.createElement('span')
+            span.innerText = content[index]
+            div.append(span)
+          }
+
+          divEl.append(parent)
+        }
+      }
+
+
+    }
+  </script>
+</body>
+
+</html>
