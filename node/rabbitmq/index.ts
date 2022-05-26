@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-04-22 09:43:40
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-04-22 11:45:06
+ * @LastEditTime: 2022-05-26 21:48:01
  */
 
 import * as amqp from "amqplib/callback_api";
@@ -34,6 +34,7 @@ function consumer (conn: { createChannel: (arg0: (err: any, ch: any) => void) =>
         
       }
     })
+    
   })
 }
 
