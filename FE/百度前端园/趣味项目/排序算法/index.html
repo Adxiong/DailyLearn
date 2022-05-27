@@ -1,0 +1,83 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-05-27 17:10:48
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-05-27 21:30:33
+-->
+<button onclick="renderRandomArray()">随机生成15个数的数组</button>
+<button onclick="bubbleSort()">使用冒泡排序</button>
+<button onclick="selectionSort()">使用选择排序法</button>
+<button>使用插入排序法</button>
+<button>快速排序法</button>
+<p id="showArray"></p>
+<p id="showSortProcess"></p>
+<script>
+  var showArrayEl = document.getElementById("showArray")
+  var showSortEl = document.getElementById("showSortProcess")
+  let data = []
+  function generaRandomArray() {
+    data = []
+    function helper(deep) {
+      if (deep == 15) return
+      var num = Math.floor(Math.random() * 100)
+      if (data.indexOf(num) < 0) {
+        data.push(num)
+        deep += 1
+      } else {
+        deep -= 1
+      }
+      helper(deep)
+    }
+    helper(0)
+  }
+
+  function renderRandomArray() {
+    generaRandomArray()
+    showArrayEl.innerText = data.toString()
+  }
+  function bubbleSort() {
+    //实现冒泡排序
+    const cloneData = [...data]
+    for (let i = 0; i < cloneData.length; i++) {
+      for (let j = 0; j < cloneData.length - i - 1; j++) {
+        if (cloneData[j] > cloneData[j + 1]) {
+          var tmp = cloneData[j + 1]
+          cloneData[j + 1] = cloneData[j]
+          cloneData[j] = tmp
+        }
+      }
+    }
+    showSortEl.innerText = cloneData.toString()
+  }
+  function selectionSort() {
+    //实现选择排序法
+    const cloneData = [...data]
+    for (let i = 0; i < cloneData.length - 1; i++) {
+      var minIndex = i
+      for (let j = i + 1; j < cloneData.length; j++) {
+        if (cloneData[minIndex] > cloneData[j]) {
+          minIndex = j
+        }
+
+      }
+      var tmp = cloneData[i]
+      cloneData[i] = cloneData[minIndex]
+      cloneData[minIndex] = tmp
+    }
+    showSortEl.innerText = cloneData.toString()
+
+  }
+  function InsertionSort() {
+    //实现插入排序法
+    const cloneData = [...data]
+
+  }
+  function QuickSort() {
+    //实现快速排序法
+    const cloneData = [...data]
+
+
+  }
+</script>
