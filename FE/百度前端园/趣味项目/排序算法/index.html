@@ -4,13 +4,13 @@
  * @Author: Adxiong
  * @Date: 2022-05-27 17:10:48
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-05-27 21:30:33
+ * @LastEditTime: 2022-05-28 01:20:08
 -->
 <button onclick="renderRandomArray()">随机生成15个数的数组</button>
 <button onclick="bubbleSort()">使用冒泡排序</button>
 <button onclick="selectionSort()">使用选择排序法</button>
-<button>使用插入排序法</button>
-<button>快速排序法</button>
+<button onclick="InsertionSort()">使用插入排序法</button>
+<button onclick="QuickSort()">快速排序法</button>
 <p id="showArray"></p>
 <p id="showSortProcess"></p>
 <script>
@@ -72,12 +72,121 @@
   function InsertionSort() {
     //实现插入排序法
     const cloneData = [...data]
+    for (let i = 1; i < cloneData.length; i++) {
+      let current = cloneData[i]
+      let preIndex = i - 1
+      while (preIndex >= 0 && cloneData[preIndex] > current) {
+        cloneData[preIndex + 1] = cloneData[preIndex]
+        preIndex--
+      }
+      cloneData[preIndex + 1] = current
+    }
+    showSortEl.innerText = cloneData.toString()
+  }
 
+  function swap(arr, left, right) {
+    temp = arr[left]
+    arr[left] = arr[right]
+    arr[right] = temp
+  }
+
+  function partition(arr, left, right) {
+    var pivot = left
+    var index = pivot + 1
+
+    for (let i = index; i <= right; i++) {
+      if (arr[i] < arr[pivot]) {
+        swap(arr, index, i)
+        index++
+      }
+    }
+
+    swap(arr, pivot, index - 1)
+
+    return index - 1
+  }
+
+  function quickSortFn(arr, left, right) {
+    if (left < right) {
+      var partitionIndex = partition(arr, left, right)
+      quickSortFn(arr, left, partitionIndex - 1)
+      quickSortFn(arr, partitionIndex + 1, right)
+    }
   }
   function QuickSort() {
     //实现快速排序法
     const cloneData = [...data]
-
-
+    var left = 0
+    var right = cloneData.length - 1
+    quickSortFn(cloneData, left, right)
+    showSortEl.innerText = cloneData.toString()
   }
+
+
+  function sort1() {
+    var arr = ["apple", "dog", "cat", "car", "zoo", "orange", "airplane"];
+    arr.sort()
+    console.log(arr);
+  }
+  sort1()
+
+  function sort2() {
+    var arr = [
+      [10, 14],
+      [16, 60],
+      [7, 44],
+      [26, 35],
+      [22, 63],
+    ];
+    arr.sort((a, b) => {
+      if (a[1] < b[1]) {
+        return 1
+      } else if (a[1] == b[1]) {
+        return 0
+      } else {
+        return -1
+      }
+    })
+    console.log(arr)
+  }
+  sort2()
+
+
+  function sort3() {
+    var arr = [
+      {
+        id: 1,
+        name: "candy",
+        value: 40,
+      },
+      {
+        id: 2,
+        name: "Simon",
+        value: 50,
+      },
+      {
+        id: 3,
+        name: "Tony",
+        value: 45,
+      },
+      {
+        id: 4,
+        name: "Annie",
+        value: 60,
+      },
+    ];
+
+    arr.sort((a, b) => {
+      if (a.value < b.value) {
+        return -1
+      } else if (a.value == b.value) {
+        return 0
+      } else {
+        return 1
+      }
+    })
+    console.log(arr)
+  }
+
+  sort3()
 </script>
