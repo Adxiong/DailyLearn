@@ -1,0 +1,68 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-05-27 15:37:40
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-05-27 15:41:11
+-->
+<input id="stack-input" type="text" />
+<p id="stack-cont">栈内容：apple-gt;pear</p>
+<button id="push-btn">进栈</button>
+<button id="pop-btn">退栈</button>
+<button id="font-btn">打印栈顶元素内容</button>
+<button id="empty-btn">判断栈是否为空</button>
+
+<script>
+  var stack = ["apple", "pear"];
+  var stackCont = document.getElementById('stack-cont')
+  var inputEl = document.getElementById('stack-input')
+  var pushBtn = document.getElementById("push-btn")
+  var popBtn = document.getElementById("pop-btn")
+  var fontBtn = document.getElementById("font-btn")
+  var emptyBtn = document.getElementById("empty-btn")
+  function isEmpty() {
+    return stack.length == 0 ? true : false
+
+  }
+
+  function Push() {
+    if (!inputEl.value) {
+      alert("输入内容不存在")
+      return
+    }
+    stack.push(inputEl.value)
+    inputEl.value = ""
+
+    stackCont.innerText = `栈内容：${stack.join(' -> ')}`
+  }
+
+  function Pop() {
+    inputEl.value = stack.pop()
+    stackCont.innerText = `栈内容：${stack.join(' -> ')}`
+  }
+
+  function Top() {
+    inputEl.value = stack[stack.length - 1]
+    stackCont.innerText = `栈内容：${stack.join(' -> ')}`
+
+  }
+
+  pushBtn.onclick = () => {
+    !isEmpty() && Push()
+  }
+
+  popBtn.onclick = () => {
+    !isEmpty() && Pop()
+  }
+
+  fontBtn.onclick = () => {
+    !isEmpty() && Top()
+  }
+
+  emptyBtn.onclick = () => {
+    const res = isEmpty()
+    stackCont.innerText = `栈内容是否为空：${res ? "是" : "否"}`
+
+  }
+</script>
