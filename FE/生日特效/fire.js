@@ -107,7 +107,9 @@ Boom.prototype = {
       } else {
         this._boom();
       }
+
       this.dead = true;
+
     } else {
       this._paint();
     }
@@ -241,6 +243,7 @@ function animate() {
       shapeIndex++
       bigbooms.push(bigboom);
     }
+
     lastTime = newTime;
   }
 

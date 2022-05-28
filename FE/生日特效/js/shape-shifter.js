@@ -21,7 +21,7 @@ var S = {
       S.UI.simulate(decodeURI(action).substring(i + 3));
     } else {
       S.UI.simulate(
-        "Three|Two|One|22年5月29|猪蹄蹄21岁啦|生日快乐|别眨眼|❤"
+        "Three|Two|One|22年5月29|猪蹄蹄生日|快乐+快乐|别眨眼|❤"
       );
     }
 

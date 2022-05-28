@@ -1,0 +1,65 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-05-28 14:49:56
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-05-28 23:49:59
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div {
+      display: flex;
+      height: auto;
+      flex: 1;
+      margin: 0 10px;
+      padding: 10px;
+      justify-content: space-between;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+  </div>
+
+  <script>
+
+    window.onload = () => {
+      var container = document.getElementsByClassName("container")[0];
+
+      (function () {
+        var domDeep = 4
+
+        function generateNode(root, deep, leafNum) {
+          if (deep == domDeep) {
+            //到达最后的叶子 返回 
+            return
+          }
+
+          for (let i = 0; i < leafNum; i++) {
+            var dom = document.createElement('div')
+            root.appendChild(dom)
+            generateNode(dom, deep + 1, leafNum)
+          }
+        }
+
+        generateNode(container, 0, 2)
+
+      })()
+    }
+
+    function 
+  </script>
+</body>
+
+</html>
