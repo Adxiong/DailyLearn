@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-05-28 14:49:56
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-05-29 10:58:28
+ * @LastEditTime: 2022-05-29 12:38:51
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -35,115 +35,169 @@
   <button onclick="dlr()"> 先序遍历</button>
   <button onclick="ldr()"> 中序遍历</button>
   <button onclick="lrd()"> 后序遍历</button>
-  <script>
-    var timer = null
-    var queue = []
+  <button onclick="dlrPromise()"> 异步先序遍历</button>
+  <button onclick="ldrPromise()"> 异步中序遍历</button>
+  <button onclick="lrdPromise()"> 异步后序遍历</button>
 
-    function initQueueAndClearTimer() {
-      queue = []
-      timer && clearInterval(timer)
+  <script>
+    var timer = null;
+    var queue = [];
+
+    function setButtonDisabled(bool) {
+      var elArr = document.getElementsByTagName("button");
+      for (let i = 0; i < elArr.length; i++) {
+        var el = elArr[i];
+        el.disabled = bool;
+      }
     }
+
+    function sleep() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, 1000);
+      });
+    }
+
+    // promise 解决
+    async function dlrPromise() {
+      setButtonDisabled(true);
+      var root = document.getElementsByClassName("container")[0];
+      async function helper(root) {
+        if (root) {
+          root.style.backgroundColor = "skyblue";
+          await sleep();
+
+          root.style.backgroundColor = "#fff";
+          root.children[0] && (await helper(root.children[0]));
+          root.children[1] && (await helper(root.children[1]));
+        }
+      }
+      await helper(root);
+      setButtonDisabled(false);
+    }
+
+    async function ldrPromise() {
+      setButtonDisabled(true);
+      var root = document.getElementsByClassName("container")[0];
+      async function helper(root) {
+        if (root) {
+          root.children[0] && (await helper(root.children[0]));
+          root.style.backgroundColor = "skyblue";
+          await sleep();
+          root.style.backgroundColor = "#fff";
+          root.children[1] && (await helper(root.children[1]));
+        }
+      }
+      await helper(root);
+      setButtonDisabled(false);
+    }
+
+    async function lrdPromise() {
+      setButtonDisabled(true);
+      var root = document.getElementsByClassName("container")[0];
+      async function helper(root) {
+        if (root) {
+          root.children[0] && (await helper(root.children[0]));
+          root.children[1] && (await helper(root.children[1]));
+          root.style.backgroundColor = "skyblue";
+          await sleep();
+          root.style.backgroundColor = "#fff";
+        }
+      }
+      await helper(root);
+      setButtonDisabled(false);
+    }
+
+    // 维护queue 处理
     function dlr() {
-      initQueueAndClearTimer()
+      setButtonDisabled(true);
       var root = document.getElementsByClassName("container")[0];
       function helper(root) {
-        var cloneRoot = root
         if (root) {
-          queue.push(root)
+          queue.push(root);
           helper(root.children[0]);
           helper(root.children[1]);
         }
       }
       helper(root);
-      show()
+      show();
     }
 
     function ldr() {
-      initQueueAndClearTimer()
+      setButtonDisabled(true);
       var root = document.getElementsByClassName("container")[0];
       function helper(root) {
-        var cloneRoot = root
         if (root) {
           helper(root.children[0]);
-          queue.push(root)
+          queue.push(root);
           helper(root.children[1]);
         }
       }
       helper(root);
-      show()
+      show();
     }
     function lrd() {
-      initQueueAndClearTimer()
+      setButtonDisabled(true);
       var root = document.getElementsByClassName("container")[0];
       function helper(root) {
-        var cloneRoot = root
         if (root) {
           helper(root.children[0]);
           helper(root.children[1]);
-          queue.push(root)
+          queue.push(root);
         }
       }
       helper(root);
-      show()
+      show();
     }
 
     function show() {
       //避免直接调用show
       if (!queue.length) {
-        return
+        return;
       }
-      var index = 0
-      timer && clearInterval(timer)
+      var index = 0;
+      timer && clearInterval(timer);
       setInterval(() => {
         if (index < queue.length) {
-          queue[index].style.backgroundColor = 'skyblue'
+          queue[index].style.backgroundColor = "skyblue";
           if (queue[index - 1]) {
-            queue[index - 1].style.backgroundColor = '#fff'
+            queue[index - 1].style.backgroundColor = "#fff";
           }
-          index++
+          index++;
         } else {
-          queue[index - 1].style.backgroundColor = '#fff'
+          queue[index - 1].style.backgroundColor = "#fff";
 
-          clearInterval(timer)
-
+          clearInterval(timer);
+          setButtonDisabled(false);
         }
-      }, 1000)
+      }, 1000);
     }
-
 
     window.onload = () => {
       var container = document.getElementsByClassName("container")[0];
       var nodeIndex = 1;
       (function () {
-        var domDeep = 4
+        var domDeep = 4;
 
         function generateNode(root, deep, leafNum) {
           if (deep == domDeep - 1) {
-            //到达最后的叶子 返回 
-            return
+            //到达最后的叶子 返回
+            return;
           }
 
           for (let i = 0; i < leafNum; i++) {
-            var dom = document.createElement('div')
-            root.appendChild(dom)
-            dom.innerText = `🍃 - ${nodeIndex}`
-            dom.dataset.index = nodeIndex++
+            var dom = document.createElement("div");
+            root.appendChild(dom);
+            dom.innerText = `🍃 - ${nodeIndex}`;
+            dom.dataset.index = nodeIndex++;
 
-            generateNode(dom, deep + 1, leafNum)
+            generateNode(dom, deep + 1, leafNum);
           }
         }
-
-        generateNode(container, 0, 2)
-
-      })()
-
-
-
-
-    }
-
-
-
+        generateNode(container, 0, 2);
+      })();
+    };
   </script>
 </body>
 
