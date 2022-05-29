@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-05-28 14:49:56
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-05-28 23:49:59
+ * @LastEditTime: 2022-05-29 10:58:28
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -28,20 +28,97 @@
 </head>
 
 <body>
-  <div class="container">
-
+  <div class="container" data-index="0">
+    🍃 - 0
   </div>
 
+  <button onclick="dlr()"> 先序遍历</button>
+  <button onclick="ldr()"> 中序遍历</button>
+  <button onclick="lrd()"> 后序遍历</button>
   <script>
+    var timer = null
+    var queue = []
+
+    function initQueueAndClearTimer() {
+      queue = []
+      timer && clearInterval(timer)
+    }
+    function dlr() {
+      initQueueAndClearTimer()
+      var root = document.getElementsByClassName("container")[0];
+      function helper(root) {
+        var cloneRoot = root
+        if (root) {
+          queue.push(root)
+          helper(root.children[0]);
+          helper(root.children[1]);
+        }
+      }
+      helper(root);
+      show()
+    }
+
+    function ldr() {
+      initQueueAndClearTimer()
+      var root = document.getElementsByClassName("container")[0];
+      function helper(root) {
+        var cloneRoot = root
+        if (root) {
+          helper(root.children[0]);
+          queue.push(root)
+          helper(root.children[1]);
+        }
+      }
+      helper(root);
+      show()
+    }
+    function lrd() {
+      initQueueAndClearTimer()
+      var root = document.getElementsByClassName("container")[0];
+      function helper(root) {
+        var cloneRoot = root
+        if (root) {
+          helper(root.children[0]);
+          helper(root.children[1]);
+          queue.push(root)
+        }
+      }
+      helper(root);
+      show()
+    }
+
+    function show() {
+      //避免直接调用show
+      if (!queue.length) {
+        return
+      }
+      var index = 0
+      timer && clearInterval(timer)
+      setInterval(() => {
+        if (index < queue.length) {
+          queue[index].style.backgroundColor = 'skyblue'
+          if (queue[index - 1]) {
+            queue[index - 1].style.backgroundColor = '#fff'
+          }
+          index++
+        } else {
+          queue[index - 1].style.backgroundColor = '#fff'
+
+          clearInterval(timer)
+
+        }
+      }, 1000)
+    }
+
 
     window.onload = () => {
       var container = document.getElementsByClassName("container")[0];
-
+      var nodeIndex = 1;
       (function () {
         var domDeep = 4
 
         function generateNode(root, deep, leafNum) {
-          if (deep == domDeep) {
+          if (deep == domDeep - 1) {
             //到达最后的叶子 返回 
             return
           }
@@ -49,6 +126,9 @@
           for (let i = 0; i < leafNum; i++) {
             var dom = document.createElement('div')
             root.appendChild(dom)
+            dom.innerText = `🍃 - ${nodeIndex}`
+            dom.dataset.index = nodeIndex++
+
             generateNode(dom, deep + 1, leafNum)
           }
         }
@@ -56,9 +136,14 @@
         generateNode(container, 0, 2)
 
       })()
+
+
+
+
     }
 
-    function 
+
+
   </script>
 </body>
 
