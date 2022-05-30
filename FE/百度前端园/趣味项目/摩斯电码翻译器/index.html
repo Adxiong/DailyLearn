@@ -1,0 +1,184 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-05-30 16:31:17
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-05-30 19:51:42
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    .panels {
+      width: 60%;
+      height: 100vh;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(300px, 1fr));
+      justify-items: center;
+      align-content: center;
+      gap: 10px;
+    }
+
+    .panels>div {
+      width: 100%;
+      border: 1px solid bisque;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    .panel {
+      text-align: center;
+    }
+
+    .morselist {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(100px, 1fr));
+    }
+  </style>
+</head>
+
+<body>
+  <div class="panels">
+    <div class="panel">
+      <h3>Morse Code Translation</h3>
+      <h1>摩尔斯码翻译器</h1>
+      <textarea rows="4" placeholder="輸入英文" id="input">MorseCode</textarea>
+      <div class="symbol">⇵</div>
+      <textarea rows="4" placeholder="輸入密碼" id="output"></textarea>
+      <div class="playlist"> </div>
+      <div class="buttons">
+        <button class="purple" id="btnMorse">翻译</button>
+        <button class="yellow" id="btnEng">解密</button>
+        <button class="white" id="btnPlay">播放</button>
+      </div>
+    </div>
+    <div>
+      <h3>翻译清单</h3>
+      <hr />
+      <ul class="morselist"></ul>
+    </div>
+
+    <audio hidden></audio>
+
+    <script>
+      //需要用到的摩尔斯加密列表
+      var morseCode = "A;.-|B;-...|C;-.-.|D;-..|E;.|F;..-.|G;--.|H;....|I;..|J;.---|K;-.-|L;.-..|M;--|N;-.|O;---|P;.--.|Q;--.-|R;.-.|S;...|T;-|U;..-|V;...-|W;.--|X;-..-|Y;-.--|Z;--..|/;-..-.|1;.----|2;..---|3;...--|4;....-|5;.....|6;-....|7;--...|8;---..|9;----.|0;-----"
+      var btnEng = document.getElementById('btnEng')
+      var btnMorse = document.getElementById('btnMorse')
+      var btnPlay = document.getElementById('btnPlay')
+      var output = document.getElementById('output')
+      var input = document.getElementById('input')
+      var playListEl = document.getElementsByClassName('playlist')[0]
+      var audioEl = document.getElementsByTagName("audio")
+      var symbolEl = document.getElementsByClassName("symbol")[0]
+
+
+      async function Worker(callback) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            callback()
+            resolve()
+          }, 0)
+        })
+      }
+
+      async function animation() {
+        await Worker(() => {
+          symbolEl.style.transition = 'transform 0s'
+        })
+        await Worker(() => {
+          symbolEl.style.transform = "rotateZ(0deg)"
+        })
+        await Worker(() => {
+          symbolEl.style.transition = 'transform 0.3s'
+        })
+        await Worker(() => {
+          symbolEl.style.transform = "rotateZ(360deg)"
+        })
+      }
+      async function btnEngClick() {
+        await animation()
+        var str = input.value
+        if (!str) return
+        output.value = getEngCode(str)
+      }
+
+      async function btnMorseClick() {
+        await animation()
+        var str = input.value
+        if (!str) { return }
+        output.value = getMorseCode(str)
+      }
+
+      function btnPlayClick() {
+        playListEl.innerText = output.value
+      }
+
+      function getMorseCode(str) {
+        var str = str.toUpperCase()
+        var morseCodeList = morseCode.split('|')
+        var morseCodeStr = ''
+        for (let i = 0; i < str.length; i++) {
+          for (let j = 0; j < morseCodeList.length; j++) {
+            if (str[i] == morseCodeList[j].split(';')[0]) {
+              morseCodeStr += morseCodeList[j].split(';')[1] + ' '
+            }
+          }
+        }
+        return morseCodeStr
+      }
+
+      function getEngCode(code) {
+        var codeList = code.split(' ')
+        var morseCodeList = morseCode.split('|')
+        var engCodeStr = ''
+        for (let i = 0; i < codeList.length; i++) {
+          for (let j = 0; j < morseCodeList.length; j++) {
+            if (codeList[i] == morseCodeList[j].split(';')[1]) {
+              engCodeStr += morseCodeList[j].split(';')[0]
+            }
+          }
+        }
+        return engCodeStr
+      }
+      function buildMorseList() {
+        var morselist = document.querySelector(".morselist");
+        morselist.innerHTML = "";
+        morseCodeToList = morseCode.split("|")
+        for (var i = 0; i < morseCodeToList.length; i++) {
+          var li = document.createElement("li");
+          li.innerHTML = morseCodeToList[i].split(';')[0] + morseCodeToList[i].split(';')[1];
+          morselist.appendChild(li);
+        }
+      }
+
+      function addEvent() {
+        btnEng.addEventListener('click', btnEngClick, false)
+        btnMorse.addEventListener('click', btnMorseClick, false)
+        btnPlay.addEventListener('click', btnPlayClick, false)
+      }
+
+      function Init() {
+        buildMorseList()
+        addEvent()
+      }
+      window.onload = Init;
+
+
+    </script>
+</body>
+
+</html>
