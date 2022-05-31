@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-05-30 16:31:17
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-05-30 19:51:42
+ * @LastEditTime: 2022-05-31 16:43:10
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +19,13 @@
     * {
       padding: 0;
       margin: 0;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      background-color: rgb(222, 210, 210);
+
     }
 
     .panels {
@@ -37,6 +44,10 @@
       border: 1px solid bisque;
       padding: 40px;
       box-sizing: border-box;
+      border-radius: 15px;
+      background-color: #9c88ff;
+
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
     }
 
     .panel {
@@ -84,6 +95,7 @@
       var playListEl = document.getElementsByClassName('playlist')[0]
       var audioEl = document.getElementsByTagName("audio")
       var symbolEl = document.getElementsByClassName("symbol")[0]
+      var audioPlayStatus = false
 
 
       async function Worker(callback) {
@@ -123,10 +135,50 @@
         output.value = getMorseCode(str)
       }
 
-      function btnPlayClick() {
-        playListEl.innerText = output.value
+      function setPlayHightLightStyle(index) {
+        var list = playListEl.children
+        for (var i = 0; i < list.length; i++) {
+          list[i].style.color = '#000'
+        }
+        if (index == -1) {
+          return
+        }
+        list[index].style.color = '#f40'
       }
 
+      function btnPlayClick() {
+        //set Morse Code to audio
+        if (audioPlayStatus) { return }
+        audioPlayStatus = true
+        var innerHTML = ""
+        output.value.split(' ').join("").split("").map(item => {
+          innerHTML += `<span>${item}</span>`
+        })
+        playListEl.innerHTML = innerHTML
+        var audioArrIndex = 0
+
+        var audioArr = (output.value.split(" ").join("")).split("").map(item => {
+          return item === '.' ? './short.mp3' : './long.mp3'
+        })
+
+        const audio = document.createElement("audio")
+        audio.src = audioArr[audioArrIndex]
+        audio.addEventListener('ended', function () {
+          audio.src = audioArr[audioArrIndex]
+          audioArrIndex += 1
+          if (audioArrIndex >= audioArr.length) {
+            setPlayHightLightStyle(-1)
+            audioPlayStatus = false
+            document.body.removeChild(audio)
+          } else {
+            setPlayHightLightStyle(audioArrIndex)
+            audio.play()
+          }
+        })
+        document.body.appendChild(audio)
+        setPlayHightLightStyle(audioArrIndex)
+        audio.play()
+      }
       function getMorseCode(str) {
         var str = str.toUpperCase()
         var morseCodeList = morseCode.split('|')
