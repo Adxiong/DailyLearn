@@ -1,0 +1,127 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-06-04 17:59:46
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-06-04 22:55:34
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: grid;
+
+      grid-template-rows: repeat(auto-fit, minmax(30px, 1fr));
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .container-content {
+      border: 1px solid black;
+    }
+
+    .controll {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .controll span {
+      width: 40px;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="container-content controll">
+      <label>
+        <span>cplX:</span>
+        <input data-label="cplX" onchange="onChange(event)" type="number" step="1" max="500" min="0" value="25">
+      </label>
+      <label>
+        <span>cplY:</span>
+        <input data-label="cplY" onchange="onChange(event)" type="number" step="1" max="500" min="0" value="25">
+      </label>
+      <label>
+        <span>X:</span>
+        <input data-label="X" onchange="onChange(event)" type="number" step="1" max="500" min="0" value="25">
+      </label>
+      <label>
+        <span>Y:</span>
+        <input data-label="Y" onchange="onChange(event)" type="number" step="1" max="500" min="0" value="62.5">
+      </label>
+    </div>
+
+    <div class="container-content">
+      <canvas width="500" height="500"></canvas>
+    </div>
+  </div>
+
+
+
+
+
+
+  <script>
+
+    var canvasEle = document.querySelector("canvas")
+    var cplX = 25
+    var cplY = 25
+    var X = 25
+    var Y = 62.5
+    function onChange(event) {
+      var lable = event.target.dataset.label
+      var value = event.target.value
+      if (lable == "cplX") {
+        cplX = value
+      } else if (lable == "cplY") {
+        cplY = value
+      } else if (lable == "X") {
+        X = value
+      } else if (lable == "Y") {
+        Y = value
+      }
+      draw()
+    }
+    function draw() {
+      ctx.clearRect(0, 0, 500, 500)
+      ctx.beginPath();
+      ctx.moveTo(75, 25);
+      ctx.quadraticCurveTo(cplX, cplY, X, Y);
+      // ctx.quadraticCurveTo(25, 100, 50, 100);
+      // ctx.quadraticCurveTo(50, 120, 30, 125);
+      // ctx.quadraticCurveTo(60, 120, 65, 100);
+      // ctx.quadraticCurveTo(125, 100, 125, 62.5);
+      // ctx.quadraticCurveTo(125, 25, 75, 25);
+      ctx.stroke();
+    }
+    if (canvasEle.getContext) {
+      var ctx = canvasEle.getContext("2d")
+      ctx.fillStyle = "red"
+
+      draw()
+
+    }
+  </script>
+</body>
+
+</html>
