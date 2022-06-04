@@ -1,0 +1,60 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-06-04 22:58:01
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-06-04 23:07:56
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas width="500" height="500"></canvas>
+
+
+  <script>
+
+    var canvasEle = document.querySelector("canvas")
+    function draw() {
+      ctx.clearRect(0, 0, 500, 500)
+
+      ctx.fillStyle = "#f40"
+      //三次贝塞尔曲线
+      ctx.beginPath();
+      ctx.moveTo(75, 40);
+      ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+      ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+      ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+      ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+      ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+      ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+      ctx.fill();
+
+    }
+    if (canvasEle.getContext) {
+      var ctx = canvasEle.getContext("2d")
+      draw()
+    }
+  </script>
+</body>
+
+</html>
