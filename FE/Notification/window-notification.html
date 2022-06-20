@@ -1,0 +1,42 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-06-20 16:03:53
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-06-20 16:12:02
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function sendNotification(message, icon, time) {
+      var notification = new Notification(message, {
+        icon: icon,
+        body: message
+      })
+      setTimeout(() => {
+        notification.close()
+      }, time || 1000)
+    }
+
+    if (window.Notification.permission === 'granted') {
+      console.log("支持")
+      sendNotification("瓦伦要塞需要支援", "https://www.baidu.com/img/bd_logo1.png", 5000)
+    } else {
+      window.Notification.requestPermission(() => {
+        sendNotification("瓦伦要塞需要支援", "https://www.baidu.com/img/bd_logo1.png", 5000)
+      })
+    }
+  </script>
+</body>
+
+</html>
