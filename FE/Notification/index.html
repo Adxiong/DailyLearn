@@ -1,0 +1,87 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-06-20 12:00:17
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-06-20 12:16:35
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .notification {
+      position: relative;
+      top: 0;
+      left: -100%;
+      width: 100px;
+      height: 70px;
+      margin: 5px;
+      background: rgb(27, 114, 236);
+      color: white;
+      padding: 0 100px;
+      box-sizing: border-box;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all .3s ease-in-out;
+    }
+
+    .show {
+      left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    const notifiList = []
+
+    class Notification {
+      constructor(title, content, type) {
+        this.title = title;
+        this.content = content;
+        this.type = type;
+      }
+      show() {
+        let notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.innerHTML = `
+          <div class="notification-title">${this.title}</div>
+          <div class="notification-content">${this.content}</div>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+          notification.classList.add('show');
+        }, 0);
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 500);
+        }, 3000);
+      }
+
+    }
+
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        const instance = new Notification(
+          'title' + i,
+          'content' + i,
+          "success"
+        )
+        notifiList.push(instance)
+        instance.show()
+      }, i * 1000)
+    }
+  </script>
+</body>
+
+</html>
