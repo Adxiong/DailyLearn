@@ -1,0 +1,46 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Adxiong
+ * @Date: 2022-06-23 16:47:37
+ * @LastEditors: Adxiong
+ * @LastEditTime: 2022-06-23 16:52:26
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text">
+  <div id="drawing"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"></script>
+  <script>
+    var input = document.querySelector('input[type=text]')
+    var draw = SVG().addTo('#drawing').viewbox(0, 0, 300, 140)
+    var text = draw.text(function (add) {
+      add.tspan(input.value)
+    })
+
+    textPath = text.path('M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80')
+
+    textPath.animate(1000).ease('<>')
+      .plot('M10 80 C 40 150, 65 150, 95 80 S 150 10, 180 80')
+      .loop(true, true)
+
+    input.addEventListener('keyup', updateText(textPath))
+
+    function updateText(textPath) {
+      return function () {
+        textPath.tspan(this.value)
+      }
+    }
+  </script>
+</body>
+
+</html>
