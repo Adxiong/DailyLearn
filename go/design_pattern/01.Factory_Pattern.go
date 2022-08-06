@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-08-06 14:57:48
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-08-06 23:48:46
+ * @LastEditTime: 2022-08-06 23:59:06
  */
 package main
 
@@ -55,7 +55,10 @@ type Fatal struct {
 
 func (f *Fatal) GetMessage() string {
 	arr := GetCaller()
-	arr = append(arr, f.action)
+	if len(f.action) > 0 {
+		arr = append(arr, f.action)
+	}
+	arr = append([]string{f.GetType()}, arr...)
 	result := strings.Join(arr, "_")
 	return result
 }
@@ -70,7 +73,10 @@ type Trace struct {
 
 func (t *Trace) GetMessage() string {
 	arr := GetCaller()
-	arr = append(arr, t.action)
+	if len(t.action) > 0 {
+		arr = append(arr, t.action)
+	}
+	arr = append([]string{t.GetType()}, arr...)
 	result := strings.Join(arr, "_")
 	return result
 }
@@ -85,7 +91,10 @@ type Warning struct {
 
 func (w *Warning) GetMessage() string {
 	arr := GetCaller()
-	arr = append(arr, w.action)
+	if len(w.action) > 0 {
+		arr = append(arr, w.action)
+	}
+	arr = append([]string{w.GetType()}, arr...)
 	result := strings.Join(arr, "_")
 	return result
 }
@@ -100,7 +109,11 @@ type Notice struct {
 
 func (n *Notice) GetMessage() string {
 	arr := GetCaller()
-	arr = append(arr, n.action)
+	if len(n.action) > 0 {
+		arr = append(arr, n.action)
+	}
+	arr = append([]string{n.GetType()}, arr...)
+
 	result := strings.Join(arr, "_")
 	return result
 }
@@ -114,7 +127,11 @@ type Error struct {
 
 func (e *Error) GetMessage() string {
 	arr := GetCaller()
-	arr = append(arr, e.action)
+	if len(e.action) > 0 {
+		arr = append(arr, e.action)
+	}
+	arr = append([]string{e.GetType()}, arr...)
+
 	result := strings.Join(arr, "_")
 	return result
 }
@@ -129,7 +146,11 @@ type Output struct {
 
 func (o *Output) GetMessage() string {
 	arr := GetCaller()
-	arr = append(arr, o.action)
+	if len(o.action) > 0 {
+		arr = append(arr, o.action)
+	}
+	arr = append([]string{o.GetType()}, arr...)
+
 	result := strings.Join(arr, "_")
 	return result
 }
@@ -191,4 +212,7 @@ func main() {
 
 	error := LogMessage(Error_Type, "Response Status is (0) ")
 	fmt.Println("消息", error.GetMessage(), error.GetType())
+
+	trace := LogMessage(Trace_Type, "")
+	fmt.Println("消息", trace.GetMessage(), trace.GetType())
 }
