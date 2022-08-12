@@ -4,7 +4,7 @@
  * @Author: Adxiong
  * @Date: 2022-08-06 14:57:48
  * @LastEditors: Adxiong
- * @LastEditTime: 2022-08-06 23:59:06
+ * @LastEditTime: 2022-08-07 00:03:11
  */
 package main
 
@@ -173,6 +173,7 @@ func RegisterLog(msg_type LogType, cb LogFactory) {
 
 // LogMessage 生成指定类型的消息对象
 func LogMessage(msg_type LogType, action string) Message {
+	fmt.Println("类型=====》", msg_type)
 	if msg_type == Fatal_Type {
 		return &Fatal{
 			action,
@@ -215,4 +216,8 @@ func main() {
 
 	trace := LogMessage(Trace_Type, "")
 	fmt.Println("消息", trace.GetMessage(), trace.GetType())
+
+	test := LogMessage("ss", "")
+	fmt.Println("消息", test.GetMessage(), test.GetType())
+
 }
